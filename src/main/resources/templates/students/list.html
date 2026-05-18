@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/layout :: head('Students')}"></head>
+<head th:replace="~{fragments/layout :: head('Students')}">
+    <link rel="stylesheet" href="../../static/css/styles.css">
+</head>
 <body class="bg-light d-flex flex-column min-vh-100">
 <div th:replace="~{fragments/layout :: nav}"></div>
 
@@ -44,12 +46,12 @@
     <div class="card shadow-sm border-0 overflow-hidden" th:if="${!#lists.isEmpty(students)}">
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
-                <thead class="table-light text-uppercase fs-7 tracking-wider border-bottom">
+                <thead class="text-uppercase fs-7 tracking-wider border-bottom">
                 <tr>
-                    <th class="ps-4 text-secondary py-3" style="width: 10%">ID</th>
-                    <th class="text-secondary py-3">Name</th>
-                    <th class="text-secondary py-3">Email</th>
-                    <th class="text-end pe-4 py-3" style="width: 25%">Actions</th>
+                    <th class="ps-4 py-3" style="width: 10%; background-color: #1f2937; color: #ffffff;">ID</th>
+                    <th class="py-3" style="background-color: #1f2937; color: #ffffff;">Name</th>
+                    <th class="py-3" style="background-color: #1f2937; color: #ffffff;">Email</th>
+                    <th class="text-end pe-4 py-3" style="width: 25%; background-color: #1f2937; color: #ffffff">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -75,7 +77,7 @@
                             <!-- Delete form uses modal overlay -->
                             <form th:action="@{/students/{id}/delete(id=${s.id})}" method="post"
                                   class="d-inline delete-form" th:attr="data-student-name=${s.name}">
-                                <button type="submit" class="btn btn-sm btn-outline-danger rounded">Delete</button>
+                                <button type="button" class="btn btn-sm btn-outline-danger rounded delete-btn">Delete</button>
                             </form>
                         </div>
                     </td>
@@ -140,43 +142,41 @@
         })();
     </script>
 
-    <!-- Delete confirm (event delegation) -->
-    <script>
-        (function () {
-            const modalEl = document.getElementById('deleteConfirmModal');
-            const confirmBtn = document.getElementById('confirmDeleteBtn');
-            const nameEl = document.getElementById('deleteStudentName');
-
-            // If this is null, bootstrap JS isn't loaded (modal won't work)
-            if (!modalEl || !confirmBtn || typeof bootstrap === 'undefined') return;
-
-            const modal = new bootstrap.Modal(modalEl);
-            let formToSubmit = null;
-
-            document.addEventListener('submit', function (e) {
-                const form = e.target;
-                if (!(form instanceof HTMLFormElement)) return;
-                if (!form.classList.contains('delete-form')) return;
-
-                e.preventDefault();
-
-                formToSubmit = form;
-                const studentName = form.getAttribute('data-student-name') || 'this student';
-                if (nameEl) nameEl.textContent = studentName;
-
-                modal.show();
-            }, true);
-
-            confirmBtn.addEventListener('click', function () {
-                if (formToSubmit) formToSubmit.submit();
-            });
-        })();
-    </script>
-
 </main>
 
-<!-- Make sure footer is included so bootstrap.bundle.min.js loads -->
+<!-- Footer must come before the delete script so bootstrap.bundle.min.js is loaded first -->
 <div th:replace="~{fragments/layout :: footer}"></div>
+
+<!-- Delete confirm — placed AFTER footer so Bootstrap JS is available -->
+<script>
+    (function () {
+        const modalEl = document.getElementById('deleteConfirmModal');
+        const confirmBtn = document.getElementById('confirmDeleteBtn');
+        const nameEl = document.getElementById('deleteStudentName');
+        if (!modalEl || !confirmBtn || typeof bootstrap === 'undefined') return;
+
+        const modal = new bootstrap.Modal(modalEl);
+        let formToSubmit = null;
+
+        document.addEventListener('click', function (e) {
+            const form = e.target.closest('form.delete-form');
+            if (!form) return;
+
+            const deleteBtn = e.target.closest('.delete-btn');
+            if (!deleteBtn) return;
+
+            e.preventDefault();
+
+            formToSubmit = form;
+            nameEl.textContent = form.getAttribute('data-student-name') || 'this student';
+            modal.show();
+        });
+
+        confirmBtn.addEventListener('click', function () {
+            if (formToSubmit) formToSubmit.submit();
+        });
+    })();
+</script>
 
 </body>
 </html>
