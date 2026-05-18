@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title th:text="${title}">Student Management</title>
+
+    <!-- Bootstrap (nice, clean UI) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Optional: your custom CSS -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body>
+<nav th:fragment="nav" class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
+    <div class="container">
+        <a class="navbar-brand fw-semibold" th:href="@{/students}">Student Management</a>
+
+        <div class="ms-auto d-flex gap-2">
+            <a class="btn btn-sm btn-outline-primary" th:href="@{/students}">Students</a>
+            <a class="btn btn-sm btn-primary" th:href="@{/students/new}">+ New Student</a>
+        </div>
+    </div>
+</nav>
+
+<footer th:fragment="footer" class="border-top mt-5 py-4">
+    <div class="container small text-muted d-flex justify-content-between">
+        <span>Student Management Module</span>
+        <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}">2026</span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/app.js}"></script>
+</footer>
+</body>
+</html>

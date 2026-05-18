@@ -1,0 +1,7 @@
+body { color: #1f2937; } /* calm dark gray */
+
+.card { border-radius: 16px; }
+.btn { border-radius: 10px; }
+.table { margin-bottom: 0; }
+
+.navbar-brand { letter-spacing: 0.2px; }

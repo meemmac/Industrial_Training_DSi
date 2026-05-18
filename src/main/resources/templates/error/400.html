@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${title})}"></head>
+<body class="bg-light">
+<div th:replace="~{fragments/layout :: nav}"></div>
+
+<main class="container py-5" style="max-width: 860px;">
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-5">
+            <div class="badge text-bg-warning mb-3">Error</div>
+            <h1 class="h3 mb-2" th:text="${title}">Bad Request</h1>
+
+            <p class="text-muted mb-4" th:text="${message}">
+                Something went wrong.
+            </p>
+
+            <a class="btn btn-primary"
+               th:href="@{${backUrl}}"
+               th:text="${backLabel}">
+                Back
+            </a>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>
