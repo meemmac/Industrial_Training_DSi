@@ -6,60 +6,123 @@
 <body class="bg-light d-flex flex-column min-vh-100">
 <div th:replace="~{fragments/layout :: nav}"></div>
 
-<main class="container py-5" style="max-width: 720px;">
+<main class="container py-5" style="max-width: 860px;">
 
-    <!-- Top Nav Action Bar Alignment -->
+    <!-- Top nav -->
     <div class="d-flex align-items-center justify-content-between mb-4">
-        <a class="text-decoration-none text-secondary small" th:href="@{/students}">
+        <a class="text-decoration-none small" style="color:#1f2937;" th:href="@{/students}">
             &larr; Directory List
         </a>
 
         <div class="d-flex gap-2">
-            <a class="btn btn-sm btn-white border shadow-sm text-secondary px-3" th:href="@{/students/{id}/edit(id=${student.id})}">
+            <a class="btn btn-sm btn-light border px-3"
+               th:href="@{/students/{id}/edit(id=${student.id})}">
                 Modify Profile
             </a>
-            <!-- Delete form uses modal overlay (no onsubmit confirm) -->
+
             <form th:action="@{/students/{id}/delete(id=${student.id})}" method="post"
                   class="d-inline delete-form" th:attr="data-student-name=${student.name}">
-                <button type="button" class="btn btn-sm btn-outline-danger px-3 delete-btn">Remove Profile</button>
+                <button type="button" class="btn btn-sm btn-outline-danger px-3 delete-btn">
+                    Remove Profile
+                </button>
             </form>
         </div>
     </div>
 
-    <!-- Data Profile Card Representation Layout -->
-    <div class="card shadow-sm border-0 overflow-hidden">
-        <div class="card-body p-4 p-md-5">
-            <div class="d-flex align-items-center gap-3 mb-4">
-                <!-- Beautiful Auto Avatar Graphic Pill element -->
-                <div class="text-white rounded-circle d-flex align-items-center justify-content-center fw-bold fs-4"
-                     style="width: 56px; height: 56px; background-color: #F5C6BA;"
-                     th:text="${#strings.substring(student.name,0,1)}">J</div>
-                    <h1 class="h4 fw-bold text-dark mb-0" th:text="${student.name}">John Doe</h1>
-                    <span class="badge bg-light text-muted border font-monospace mt-1">Student Information</span>
+    <!-- Profile header card -->
+    <div class="card border-0 shadow-sm overflow-hidden mb-4">
+        <div class="p-4 p-md-5"
+             style="
+       background: linear-gradient(
+         135deg,
+         rgba(245, 198, 186, 0.55),
+         rgba(245, 198, 186, 0.18),
+         rgba(31, 41, 55, 0.06)
+       );
+       background-size: 300% 300%;
+       animation: profileGradientMove 10s ease-in-out infinite;
+     ">
+            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-4">
+
+                <div class="d-flex align-items-center gap-3">
+                    <div class="text-white rounded-circle d-flex align-items-center justify-content-center fw-bold"
+                         style="width: 72px; height: 72px; font-size: 1.6rem; background-color: #1f2937;"
+                         th:text="${#strings.substring(student.name,0,1)}">J</div>
+
+                    <div>
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <h1 class="h4 fw-bold mb-0" style="color:#1f2937;" th:text="${student.name}">John Doe</h1>
+                            <span class="badge bg-white border text-muted">Student Profile</span>
+                        </div>
+                        <div class="text-muted small mt-1">
+                            Ref ID: <span class="font-monospace" th:text="${student.id}">1</span>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- Quick action -->
+                <div class="d-flex align-items-center gap-2">
+                    <a class="btn btn-sm btn-outline-secondary"
+                       th:href="'mailto:' + ${student.email}">
+                        Email Student
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Info card -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4 p-md-5">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <div class="fw-semibold" style="color:#1f2937;">Information</div>
             </div>
 
-            <hr class="text-muted opacity-25 my-4">
-
-            <div class="row g-4">
-                <div class="col-sm-4">
-                    <div class="text-uppercase tracking-wider font-weight-bold text-muted mb-1" style="font-size: 0.7rem;">Database Ref ID</div>
-                    <div class="font-monospace text-dark fw-semibold" th:text="${student.id}">1</div>
+            <div class="row g-3">
+                <!-- ID -->
+                <div class="col-12 col-md-4">
+                    <div class="p-3 border rounded-3 bg-light h-100">
+                        <div class="text-uppercase text-muted fw-semibold" style="font-size:0.7rem; letter-spacing:.08em;">
+                            Database Ref ID
+                        </div>
+                        <div class="font-monospace fw-semibold mt-1" style="color:#1f2937;" th:text="${student.id}">1</div>
+                    </div>
                 </div>
 
-                <div class="col-sm-8">
-                    <div class="text-uppercase tracking-wider font-weight-bold text-muted mb-1" style="font-size: 0.7rem;">Verified Email Address</div>
-                    <div>
-                        <a class="text-decoration-none text-primary fw-medium" th:href="'mailto:' + ${student.email}" th:text="${student.email}">
-                            john@example.com
-                        </a>
+                <!-- Email -->
+                <div class="col-12 col-md-8">
+                    <div class="p-3 border rounded-3 bg-light h-100">
+                        <div class="text-uppercase text-muted fw-semibold" style="font-size:0.7rem; letter-spacing:.08em;">
+                            Verified Email Address
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between gap-2 mt-1 flex-wrap">
+                            <a class="text-decoration-none fw-semibold"
+                               style="color:#1f2937;"
+                               th:href="'mailto:' + ${student.email}"
+                               th:text="${student.email}">
+                                john@example.com
+                            </a>
+
+                            <button class="btn btn-sm btn-outline-secondary"
+                                    type="button"
+                                    id="copyEmailBtn"
+                                    th:attr="data-email=${student.email}">
+                                Copy
+                            </button>
+                        </div>
+
+                        <div class="text-muted small mt-2">
+                            Tip: Use “Copy” to quickly paste the email elsewhere.
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Delete confirmation modal (identical to list page) -->
+    <!-- Delete confirmation modal -->
     <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow">
@@ -115,6 +178,27 @@
 
         confirmBtn.addEventListener('click', function () {
             if (formToSubmit) formToSubmit.submit();
+        });
+    })();
+</script>
+<script>
+    (function () {
+        const btn = document.getElementById('copyEmailBtn');
+        if (!btn) return;
+
+        btn.addEventListener('click', async function () {
+            const email = btn.getAttribute('data-email') || '';
+            if (!email) return;
+
+            try {
+                await navigator.clipboard.writeText(email);
+                const old = btn.textContent;
+                btn.textContent = 'Copied';
+                setTimeout(() => (btn.textContent = old), 900);
+            } catch (e) {
+                // fallback
+                prompt('Copy email:', email);
+            }
         });
     })();
 </script>
