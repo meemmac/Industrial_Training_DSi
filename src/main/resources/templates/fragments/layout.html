@@ -74,30 +74,12 @@
 </head>
 <body class="d-flex flex-column min-vh-100 bg-light">
 
-<nav th:fragment="nav" class="navbar navbar-expand-md bg-white border-bottom shadow-sm py-2">
+<nav th:fragment="nav" class="navbar navbar-expand-md border-bottom shadow-sm py-2" style="background-color: #BAC5D7;">
     <div class="container">
-        <a class="navbar-brand fw-bold text-brand" th:href="@{/students}">
+        <a class="navbar-brand fw-bold text-brand" th:href="@{/}">
             🎓 StudentPortal
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="mainNav">
-            <ul class="navbar-nav ms-auto align-items-md-center gap-2 mt-2 mt-md-0">
-                <li class="nav-item">
-                    <a class="nav-link px-3 rounded-pill"
-                       th:classappend="${activeTab == 'list'} ? 'theme-nav-active' : 'text-secondary hover-brand'"
-                       th:href="@{/students}">Directory</a>
-                </li>
-
-                <li class="nav-item" th:if="${activeTab != 'list' and activeTab != 'form'}">
-                    <a class="btn btn-sm theme-btn-primary px-3 rounded-pill shadow-sm" th:href="@{/students/new}">
-                        + New Student
-                    </a>
-                </li>
-            </ul>
-        </div>
+        <!-- Directory and + New Student removed -->
     </div>
 </nav>
 
@@ -110,3 +92,5 @@
 </footer>
 </body>
 </html>
+```*
+

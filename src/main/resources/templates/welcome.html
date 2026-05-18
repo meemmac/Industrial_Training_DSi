@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Welcome')}">
+    <link rel="stylesheet" href="../static/css/styles.css">
+</head>
+
+<body class="bg-light d-flex flex-column min-vh-100 welcome-bg">
+
+<main class="container flex-grow-1 d-flex align-items-center justify-content-center py-4">
+    <div class="text-center w-100" style="max-width: 720px;">
+        <h1 class="display-6 fw-bold text-brand mb-2">Welcome to StudentPortal</h1>
+        <p class="text-secondary mb-4">
+            Choose where you want to go:
+        </p>
+
+        <div class="row g-3 justify-content-center">
+            <div class="col-12 col-md-6">
+                <a class="btn theme-btn-primary w-100 py-4 shadow-sm"
+                   th:href="@{/students}"
+                   style="border-radius: 18px;">
+                    <div class="fs-4 fw-semibold mb-1">Directory</div>
+                    <div class="opacity-75">View all students and manage profiles</div>
+                </a>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <a class="btn welcome-btn-secondary w-100 py-4 shadow-sm"
+                   th:href="@{/students/new}"
+                   style="border-radius: 18px;">
+                    <div class="fs-4 fw-semibold mb-1">Add New Student</div>
+                    <div class="welcome-btn-secondary-subtext">Register a new student profile</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>
