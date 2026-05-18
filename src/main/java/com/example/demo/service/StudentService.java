@@ -15,4 +15,7 @@ public interface StudentService {
     void delete(Long id);
 
     StudentForm toForm(Student student);
+
+    boolean emailExistsForCreate(String email);
+    boolean emailExistsForUpdate(Long id, String email);
 }

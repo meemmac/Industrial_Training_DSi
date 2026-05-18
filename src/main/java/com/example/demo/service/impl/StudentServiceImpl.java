@@ -34,27 +34,50 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public boolean emailExistsForCreate(String email) {
+        if (email == null) return false;
+        String e = email.trim();
+        if (e.isEmpty()) return false;
+        return repo.existsByEmailIgnoreCase(e);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean emailExistsForUpdate(Long id, String email) {
+        if (email == null) return false;
+        String e = email.trim();
+        if (e.isEmpty()) return false;
+
+        Student existing = findByIdOrThrow(id);
+        return !existing.getEmail().equalsIgnoreCase(e) && repo.existsByEmailIgnoreCase(e);
+    }
+
+    @Override
     public Student create(StudentForm form) {
-        if (repo.existsByEmail(form.getEmail())) {
-            throw new IllegalArgumentException("Email already exists: " + form.getEmail());
+        String email = (form.getEmail() == null) ? null : form.getEmail().trim();
+
+        if (email != null && repo.existsByEmailIgnoreCase(email)) {
+            throw new IllegalArgumentException("Email already exists: " + email);
         }
 
-        Student s = new Student(form.getName(), form.getEmail());
+        Student s = new Student(form.getName(), email);
         return repo.save(s);
     }
 
     @Override
     public Student update(Long id, StudentForm form) {
         Student existing = findByIdOrThrow(id);
+        String newEmail = (form.getEmail() == null) ? null : form.getEmail().trim();
 
-        String newEmail = form.getEmail();
-        if (!existing.getEmail().equalsIgnoreCase(newEmail) && repo.existsByEmail(newEmail)) {
+        if (newEmail != null
+                && !existing.getEmail().equalsIgnoreCase(newEmail)
+                && repo.existsByEmailIgnoreCase(newEmail)) {
             throw new IllegalArgumentException("Email already exists: " + newEmail);
         }
 
         existing.setName(form.getName());
         existing.setEmail(newEmail);
-
         return repo.save(existing);
     }
 

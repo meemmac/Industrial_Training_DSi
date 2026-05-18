@@ -47,10 +47,17 @@ public class StudentController {
     public String create(@Valid @ModelAttribute("studentForm") StudentForm form,
                          BindingResult bindingResult,
                          Model model) {
+
+        // ✅ ADD THIS: duplicate email check (CREATE)
+        if (service.emailExistsForCreate(form.getEmail())) {
+            bindingResult.rejectValue("email", "duplicate", "Email already exists");
+        }
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("mode", "create");
             return "students/form";
         }
+
         service.create(form);
         return "redirect:/students";
     }
@@ -73,11 +80,18 @@ public class StudentController {
                          @Valid @ModelAttribute("studentForm") StudentForm form,
                          BindingResult bindingResult,
                          Model model) {
+
+        // ✅ ADD THIS: duplicate email check (UPDATE)
+        if (service.emailExistsForUpdate(id, form.getEmail())) {
+            bindingResult.rejectValue("email", "duplicate", "Email already exists");
+        }
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("mode", "edit");
             model.addAttribute("studentId", id);
             return "students/form";
         }
+
         service.update(id, form);
         return "redirect:/students/" + id;
     }
