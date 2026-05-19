@@ -66,8 +66,11 @@
         if (prevBtn) prevBtn.disabled = currentPage <= 1;
         if (nextBtn) nextBtn.disabled = currentPage >= tp;
 
-        const showingNow = filteredRows.slice(start, end).length;
-        if (count) count.textContent = `${showingNow} / ${filteredRows.length} shown`;
+        const total = filteredRows.length;
+        const from = total === 0 ? 0 : start + 1;
+        const to = Math.min(end, total);
+
+        if (count) count.textContent = `Showing ${from}-${to} of ${total}`;
     }
 
     function applyFilter() {
