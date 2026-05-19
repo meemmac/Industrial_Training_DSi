@@ -1,8 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/layout :: head('Student Details')}">
-    <link rel="stylesheet" href="../../static/css/styles.css">
-</head>
+<head th:replace="~{fragments/layout :: head('Student Details')}"></head>
 <body class="bg-light d-flex flex-column min-vh-100">
 <div th:replace="~{fragments/layout :: nav}"></div>
 
@@ -148,60 +146,11 @@
 
 </main>
 
-<!-- Footer loads bootstrap.bundle.min.js — must come before the modal script -->
+<!-- Footer loads bootstrap.bundle.min.js — must come before page JS if page JS uses bootstrap -->
 <div th:replace="~{fragments/layout :: footer}"></div>
 
-<!-- Delete confirm — placed AFTER footer so Bootstrap JS is available -->
-<script>
-    (function () {
-        const modalEl = document.getElementById('deleteConfirmModal');
-        const confirmBtn = document.getElementById('confirmDeleteBtn');
-        const nameEl = document.getElementById('deleteStudentName');
-        if (!modalEl || !confirmBtn || typeof bootstrap === 'undefined') return;
-
-        const modal = new bootstrap.Modal(modalEl);
-        let formToSubmit = null;
-
-        document.addEventListener('click', function (e) {
-            const form = e.target.closest('form.delete-form');
-            if (!form) return;
-
-            const deleteBtn = e.target.closest('.delete-btn');
-            if (!deleteBtn) return;
-
-            e.preventDefault();
-
-            formToSubmit = form;
-            nameEl.textContent = form.getAttribute('data-student-name') || 'this student';
-            modal.show();
-        });
-
-        confirmBtn.addEventListener('click', function () {
-            if (formToSubmit) formToSubmit.submit();
-        });
-    })();
-</script>
-<script>
-    (function () {
-        const btn = document.getElementById('copyEmailBtn');
-        if (!btn) return;
-
-        btn.addEventListener('click', async function () {
-            const email = btn.getAttribute('data-email') || '';
-            if (!email) return;
-
-            try {
-                await navigator.clipboard.writeText(email);
-                const old = btn.textContent;
-                btn.textContent = 'Copied';
-                setTimeout(() => (btn.textContent = old), 900);
-            } catch (e) {
-                // fallback
-                prompt('Copy email:', email);
-            }
-        });
-    })();
-</script>
+<script src="/js/app.js" defer></script>
+<script src="/js/students/details.js" defer></script>
 
 </body>
 </html>

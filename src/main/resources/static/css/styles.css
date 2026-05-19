@@ -1,3 +1,4 @@
+/* Base */
 body { color: #1f2937; } /* calm dark gray */
 
 .card { border-radius: 16px; }
@@ -5,6 +6,81 @@ body { color: #1f2937; } /* calm dark gray */
 .table { margin-bottom: 0; }
 
 .navbar-brand { letter-spacing: 0.2px; }
+
+/* Nav background (moved from inline style in layout.html) */
+.app-navbar { background-color: #BAC5D7; }
+
+/* =========================================================
+   Theme / Brand styles (MOVED from layout.html inline <style>)
+   ========================================================= */
+
+/* Brand Specific Color (#091f2c) */
+.theme-btn-primary {
+    background-color: #091f2c !important;
+    border-color: #091f2c !important;
+    color: #ffffff !important;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* The Shining Hover Transition Effect */
+.theme-btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.3) 50%,
+            rgba(255, 255, 255, 0) 100%
+    );
+    transform: skewX(-25deg);
+    z-index: -1;
+    transition: none;
+}
+
+.theme-btn-primary:hover::before,
+.theme-btn-primary:focus::before {
+    left: 150%;
+    transition: left 0.6s ease-in-out;
+}
+
+.theme-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(9, 31, 44, 0.15);
+    color: #ffffff !important;
+}
+
+/* Active Navigation Tab Styling matching #091f2c */
+.theme-nav-active {
+    background-color: #091f2c !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.text-brand {
+    color: #091f2c !important;
+}
+
+.hover-brand:hover {
+    color: #091f2c !important;
+}
+
+/* Subtle interactive accenting for standard text buttons (like Edit) */
+.text-brand-hover:hover {
+    color: #ffffff !important;
+    background-color: #091f2c !important;
+    border-color: #091f2c !important;
+}
+
+/* =========================================================
+   Your existing page-specific styles (already in styles.css)
+   ========================================================= */
 
 /* Welcome screen: "+ New Student" button styling */
 .welcome-btn-secondary {

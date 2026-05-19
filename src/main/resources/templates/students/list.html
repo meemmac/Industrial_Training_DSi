@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/layout :: head('Students')}">
-    <link rel="stylesheet" href="../../static/css/styles.css">
+<head th:replace="~{fragments/layout :: head('Student Directory')}">
+    <script src="../../static/js/students/list.js"></script>
 </head>
 <body class="bg-light d-flex flex-column min-vh-100">
 <div th:replace="~{fragments/layout :: nav}"></div>
@@ -139,125 +139,14 @@
             </div>
         </div>
     </div>
-
-    <!-- Search + Pagination script (combined) -->
-    <script>
-        (function () {
-            const pageSize = 25;
-
-            const input = document.getElementById('studentSearch');
-            const count = document.getElementById('searchCount');
-
-            const tbody = document.querySelector('tbody');
-            if (!tbody) return;
-
-            const allRows = Array.from(tbody.querySelectorAll('tr'));
-
-            const prevBtn = document.getElementById('prevPageBtn');
-            const nextBtn = document.getElementById('nextPageBtn');
-            const pageNumEl = document.getElementById('pageNum');
-            const pageTotalEl = document.getElementById('pageTotal');
-
-            let currentPage = 1; // 1-based
-            let filteredRows = allRows;
-
-            function totalPages() {
-                return Math.max(1, Math.ceil(filteredRows.length / pageSize));
-            }
-
-            function clampPage() {
-                const tp = totalPages();
-                if (currentPage < 1) currentPage = 1;
-                if (currentPage > tp) currentPage = tp;
-                return tp;
-            }
-
-            function render() {
-                const tp = clampPage();
-                const start = (currentPage - 1) * pageSize;
-                const end = start + pageSize;
-
-                // hide all rows first
-                allRows.forEach(r => r.style.display = 'none');
-
-                // show only current page rows (from filtered set)
-                filteredRows.slice(start, end).forEach(r => r.style.display = '');
-
-                // update pagination UI
-                if (pageNumEl) pageNumEl.textContent = String(currentPage);
-                if (pageTotalEl) pageTotalEl.textContent = String(tp);
-                if (prevBtn) prevBtn.disabled = currentPage <= 1;
-                if (nextBtn) nextBtn.disabled = currentPage >= tp;
-
-                // update "shown" counter
-                const showingNow = filteredRows.slice(start, end).length;
-                if (count) count.textContent = `${showingNow} / ${filteredRows.length} shown`;
-            }
-
-            function applyFilter() {
-                const q = (input ? input.value.trim().toLowerCase() : '');
-                filteredRows = allRows.filter(row => {
-                    const hay = (row.getAttribute('data-search') || '').toLowerCase();
-                    return q === '' || hay.includes(q);
-                });
-
-                currentPage = 1;
-                render();
-            }
-
-            if (input) input.addEventListener('input', applyFilter);
-
-            if (prevBtn) prevBtn.addEventListener('click', function () {
-                currentPage--;
-                render();
-            });
-
-            if (nextBtn) nextBtn.addEventListener('click', function () {
-                currentPage++;
-                render();
-            });
-
-            // init
-            applyFilter();
-        })();
-    </script>
-
 </main>
 
 <!-- Footer must come before the delete script so bootstrap.bundle.min.js is loaded first -->
 <div th:replace="~{fragments/layout :: footer}"></div>
 
 <!-- Delete confirm — placed AFTER footer so Bootstrap JS is available -->
-<script>
-    (function () {
-        const modalEl = document.getElementById('deleteConfirmModal');
-        const confirmBtn = document.getElementById('confirmDeleteBtn');
-        const nameEl = document.getElementById('deleteStudentName');
-        if (!modalEl || !confirmBtn || typeof bootstrap === 'undefined') return;
-
-        const modal = new bootstrap.Modal(modalEl);
-        let formToSubmit = null;
-
-        document.addEventListener('click', function (e) {
-            const form = e.target.closest('form.delete-form');
-            if (!form) return;
-
-            const deleteBtn = e.target.closest('.delete-btn');
-            if (!deleteBtn) return;
-
-            e.preventDefault();
-
-            formToSubmit = form;
-            if (nameEl) nameEl.textContent = form.getAttribute('data-student-name') || 'this student';
-
-            modal.show();
-        });
-
-        confirmBtn.addEventListener('click', function () {
-            if (formToSubmit) formToSubmit.submit();
-        });
-    })();
-</script>
+<script src="/js/app.js" defer></script>
+<script src="/js/students/list.js" defer></script>
 
 </body>
 </html>

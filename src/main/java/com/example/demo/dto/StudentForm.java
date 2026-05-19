@@ -1,6 +1,5 @@
 package com.example.demo.dto;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -16,8 +15,11 @@ public class StudentForm {
     private String name;
 
     @NotBlank(message = "Email is required")
-    @Email(message = "Email must be valid")
     @Size(max = 150, message = "Email must be at most 150 characters")
+    @Pattern(
+            regexp = "^[a-z0-9_]+(?:\\.[a-z0-9]_+)*@[a-z0-9]+(?:\\.[a-z0-9]+)+$",
+            message = "Email must contain only lowercase letters, numbers, dots, one @, and a valid domain"
+    )
     private String email;
 
     public StudentForm() {}

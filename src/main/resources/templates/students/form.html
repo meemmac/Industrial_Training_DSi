@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/layout :: head(${mode} == 'edit' ? 'Edit Student' : 'Create Student')}"></head>
+<head th:replace="~{fragments/layout :: head(${mode == 'edit'} ? 'Edit Student' : 'Create Student')}"></head>
+
 <body class="bg-light d-flex flex-column min-vh-100">
 <div th:replace="~{fragments/layout :: nav}" th:with="activeTab='form'"></div>
 
@@ -19,7 +20,8 @@
             </div>
 
             <form method="post"
-                  th:action="${mode} == 'edit' ? @{/students/{id}(id=${studentId})} : @{/students}"
+                  th:with="actionUrl=${mode == 'edit'} ? '/students/' + ${studentId} : '/students'"
+                  th:action="${actionUrl}"
                   th:object="${studentForm}" novalidate>
 
                 <div class="mb-3">
